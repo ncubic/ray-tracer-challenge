@@ -143,3 +143,36 @@ func TestNegate(t *testing.T) {
 		t.Fatalf("%+v should negate to %+v insted of %+v", tup, e, r)
 	}
 }
+
+func TestMultiplyByScalar(t *testing.T) {
+	tup := Tupple{1, -2, 3, -4}
+	scalar := 3.5
+	expected := Tupple{3.5, -7, 10.5, -14}
+
+	r := tup.Multiply(scalar)
+	if !expected.Equals(r) {
+		t.Fatalf("%+v should multiply to %+v insted of %+v", tup, expected, r)
+	}
+}
+
+func TestMultiplyByFraction(t *testing.T) {
+	tup := Tupple{1, -2, 3, -4}
+	fraction := 0.5
+	expected := Tupple{0.5, -1, 1.5, -2}
+
+	r := tup.Multiply(fraction)
+	if !expected.Equals(r) {
+		t.Fatalf("%+v should multiply to %+v insted of %+v", tup, expected, r)
+	}
+}
+
+func TestDivide(t *testing.T) {
+	tup := Tupple{1, -2, 3, -4}
+	divisor := 2.0
+	expected := Tupple{0.5, -1, 1.5, -2}
+
+	r := tup.Divide(divisor)
+	if !expected.Equals(r) {
+		t.Fatalf("%+v should divide to %+v insted of %+v", tup, expected, r)
+	}
+}
