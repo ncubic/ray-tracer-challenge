@@ -1,4 +1,4 @@
-package main
+package types
 
 import "testing"
 
@@ -174,5 +174,105 @@ func TestDivide(t *testing.T) {
 	r := tup.Divide(divisor)
 	if !expected.Equals(r) {
 		t.Fatalf("%+v should divide to %+v insted of %+v", tup, expected, r)
+	}
+}
+
+func TestMagnitude(t *testing.T) {
+	v := CreateVector(1, 0, 0)
+	em := 1.0
+
+	r := v.Magnitude()
+	if !SafeEquals(em, r) {
+		t.Fatalf("Magnitude of %+v should be %f insted of %f", v, em, r)
+	}
+
+	v = CreateVector(0, 1, 0)
+	em = 1.0
+
+	r = v.Magnitude()
+	if !SafeEquals(em, r) {
+		t.Fatalf("Magnitude of %+v should be %f insted of %f", v, em, r)
+	}
+
+	v = CreateVector(0, 0, 1)
+	em = 1.0
+
+	r = v.Magnitude()
+	if !SafeEquals(em, r) {
+		t.Fatalf("Magnitude of %+v should be %f insted of %f", v, em, r)
+	}
+
+	v = CreateVector(1, 2, 3)
+	em = 3.741657
+
+	r = v.Magnitude()
+	if !SafeEquals(em, r) {
+		t.Fatalf("Magnitude of %+v should be %f insted of %f", v, em, r)
+	}
+
+	v = CreateVector(-1, -2, -3)
+	em = 3.741657
+
+	r = v.Magnitude()
+	if !SafeEquals(em, r) {
+		t.Fatalf("Magnitude of %+v should be %f insted of %f", v, em, r)
+	}
+}
+
+func TestNormalize(t *testing.T) {
+	v := CreateVector(4, 0, 0)
+	e := CreateVector(1, 0, 0)
+
+	r := v.Normalize()
+	if !e.Equals(r) {
+		t.Fatalf("Normalized vector of %+v should be %+v insted of %+v", v, e, r)
+	}
+
+	v = CreateVector(1, 2, 3)
+	e = CreateVector(0.26726, 0.53452, 0.80178)
+
+	r = v.Normalize()
+	if !e.Equals(r) {
+		t.Fatalf("Normalized vector of %+v should be %+v insted of %+v", v, e, r)
+	}
+}
+
+func TestNormalizeMagnitude(t *testing.T) {
+	v := CreateVector(1, 2, 3)
+	n := v.Normalize()
+	em := 1.0
+
+	r := n.Magnitude()
+	if !SafeEquals(r, em) {
+		t.Fatalf("Magnitude of normalized vector %+v should be %f insted of %f", v, em, r)
+	}
+}
+
+func TestDotProduct(t *testing.T) {
+	a := CreateVector(1, 2, 3)
+	b := CreateVector(2, 3, 4)
+
+	expected := 20.0
+	actual := a.Dot(b)
+
+	if !SafeEquals(expected, actual) {
+		t.Fatalf("Dot product of vectors %+v and %+v should be %f insted of %f", a, b, expected, actual)
+	}
+}
+
+func TestCrossProduct(t *testing.T) {
+	a := CreateVector(1, 2, 3)
+	b := CreateVector(2, 3, 4)
+
+	expected := CreateVector(-1, 2, -1)
+	actual := a.Cross(b)
+	if !expected.Equals(actual) {
+		t.Fatalf("Cross product of vectors %+v and %+v should be %f insted of %f", a, b, expected, actual)
+	}
+
+	expected = CreateVector(1, -2, 1)
+	actual = b.Cross(a)
+	if !expected.Equals(actual) {
+		t.Fatalf("Cross product of vectors %+v and %+v should be %f insted of %f", b, a, expected, actual)
 	}
 }

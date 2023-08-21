@@ -1,4 +1,4 @@
-package main
+package types
 
 import "math"
 
@@ -71,6 +71,35 @@ func (t Tupple) Divide(divisor float64) Tupple {
 		t.Z / divisor,
 		t.W / divisor,
 	}
+}
+
+func (t Tupple) Magnitude() float64 {
+	return math.Sqrt(t.X*t.X + t.Y*t.Y + t.Z*t.Z + t.W*t.W)
+}
+
+func (t Tupple) Normalize() Tupple {
+	magnitude := t.Magnitude()
+	return Tupple{
+		t.X / magnitude,
+		t.Y / magnitude,
+		t.Z / magnitude,
+		t.W / magnitude,
+	}
+}
+
+func (t Tupple) Dot(o Tupple) float64 {
+	return t.X*o.X +
+		t.Y*o.Y +
+		t.Z*o.Z +
+		t.W*o.W
+}
+
+func (t Tupple) Cross(o Tupple) Tupple {
+	return CreateVector(
+		t.Y*o.Z-t.Z*o.Y,
+		t.Z*o.X-t.X*o.Z,
+		t.X*o.Y-t.Y*o.X,
+	)
 }
 
 func CreatePoint(x, y, z float64) Tupple {
