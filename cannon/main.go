@@ -1,27 +1,32 @@
 package main
 
 import (
-	"fmt"
+	o "rtc/outputs"
 	t "rtc/types"
-	"time"
 )
 
 func main() {
-	p := Projectile{t.CreatePoint(0, 1, 0), t.CreateVector(1, 1, 0).Normalize()}
-	e := Environment{t.CreateVector(0, -0.1, 0), t.CreateVector(-0.01, 0, 0)}
+	start := t.CreatePoint(0, 1, 0)
+	velocity := t.CreateVector(1, 1.8, 0).Normalize().Multiply(11.25)
+	p := Projectile{start, velocity}
+
+	gravity := t.CreateVector(0, -0.1, 0)
+	wind := t.CreateVector(-0.01, 0, 0)
+	e := Environment{gravity, wind}
+
+	c := t.CreateCanvas(900, 550)
 
 	for {
 		p = tick(e, p)
 
 		if p.position.Y <= 0 {
-			fmt.Printf("Huston, we have a problem. Impact at %+v with velocity %+v\n", p.position, p.velocity)
 			break
-		} else {
-			fmt.Printf("Huston, problem is closer. Currently at %+v with velocity %+v\n", p.position, p.velocity)
 		}
 
-		time.Sleep(1 * time.Second)
+		c.WritePixel(int(p.position.X), c.Height-int(p.position.Y), t.CreateColor(50, 50, 50))
 	}
+
+	o.ToFile(c, "cannon")
 }
 
 type Projectile struct {
